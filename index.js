@@ -11,17 +11,22 @@ app.listen(3001, () => console.log(`listening on http://localhost:3001`))
 function handler(req, res) {
 
     if (req.method == 'POST') {
-        const app = new DialogflowApp({
-            request: req,
-            response: res
-        });
-
+        
+        
+        const app = new DialogflowApp({request: req, response: res});
+        const NAME_ACTION = 'tell.what_need_to_know';
+        const COLOR_ARGUMENT = 'need_to_know';
+        
+        function makeName (app) {
+          const color = app.getArgument(COLOR_ARGUMENT);
+          app.tell('Alright, your silly name is ' + color + ' hope you like it. See you next time.');
+        }
+        
         const actionMap = new Map();
-        actionMap.set('tell.what_need_to_know', function numberIntent(app) {
-            const number = app.getArgument("need_to_know");
-            app.tell('You said ' + number);
-        });
+        actionMap.set(NAME_ACTION, makeName);
         app.handleRequest(actionMap);
+        
+        
     } else {
 
         fs.readFile(__dirname + '/index.html',
