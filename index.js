@@ -4,10 +4,12 @@ const app = require('http').createServer(handler),
  ip = require("ip"),
  sensor = require('./sensor');
 
-app.listen(3001, ip.address(), () => console.log(`listening on http://${ip.address()}:3001`))
+app.listen(3001, () => console.log(`listening on http://localhost:3001`))
 
 
 function handler(req, res) {
+    
+    console.log(req);
     fs.readFile(__dirname + '/index.html',
         function (err, data) {
             if (err) {
