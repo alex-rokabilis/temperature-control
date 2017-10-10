@@ -1,13 +1,31 @@
-var sensor = require('node-dht-sensor');
+const app = require('http').createServer(handler),
+ io = require('socket.io')(app),
+ fs = require('fs'),
+ ip = require("ip"),
+ sensor = require('./sensor');
 
-setInterval(function(){
-sensor.read(11, 4, function(err, temperature, humidity) {
-    if (!err) {
-        console.log('temp: ' + temperature.toFixed(1) + '  C, ' +
-            'humidity: ' + humidity.toFixed(1) + '%'
-        );
-    }
-    else{ console.log(err)}
-});
+app.listen(3001, ip.address(), () => console.log(`listening on http://${ip.address()}:3001`))
 
+
+function handler(req, res) {
+    fs.readFile(__dirname + '/index.html',
+        function (err, data) {
+            if (err) {
+                res.writeHead(500);
+                return res.end('Error loading index.html');
+            }
+
+            res.writeHead(200);
+            res.end(data);
+        });
+}
+
+
+setInterval(() => {
+    sensor.read()
+        .then(({temperature,humidity}) =>{
+            io.of('/').emit('temperature', temperature);
+            io.of('/').emit('humidity', humidity);
+            io.sockets.emit('temperature',)
+        })
 },1000)

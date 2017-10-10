@@ -1,0 +1,31 @@
+<html>
+
+<head>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+</head>
+
+<body>
+    <p>
+        <span>Temperature:</span>
+        <span id="currentTemperature"></span>
+    </p>
+    <p>
+        <span>Humidity:</span>
+        <span id="currentHumidity"></span>
+    </p>
+
+   
+    <script>
+        var socket = io();
+        
+        socket.on('temperature', function (data) {
+            document.getElementById('currentTemperature').textContent = data
+        });
+        socket.on('humidity', function (data) {
+            document.getElementById('currentHumidity').textContent = data
+        });
+    </script>
+</body>
+
+</html>
