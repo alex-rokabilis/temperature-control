@@ -23,17 +23,22 @@ function handler(req, res) {
             });
     } else {
 
-        const app = new DialogflowApp({
-            request: req,
-            response: res
-        });
+        try{
+            const app = new DialogflowApp({
+                request: req,
+                response: res
+            });
+    
+            const actionMap = new Map();
+            actionMap.set('tell.what_need_to_know', function numberIntent(app) {
+                const number = app.getArgument("need_to_know");
+                app.tell('You said ' + number);
+            });
+            app.handleRequest(actionMap);
+        }catch(err){
+            
+        }
 
-        const actionMap = new Map();
-        actionMap.set('tell.what_need_to_know', function numberIntent(app) {
-            const number = app.getArgument("need_to_know");
-            app.tell('You said ' + number);
-        });
-        app.handleRequest(actionMap);
     }
 
 }
