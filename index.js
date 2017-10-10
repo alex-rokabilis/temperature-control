@@ -30,7 +30,7 @@ function handler(req, res) {
 
         const actionMap = new Map();
         actionMap.set('tell.what_need_to_know', function numberIntent(app) {
-            const number = app.getArgument(NUMBER_ARGUMENT);
+            const number = app.getArgument("need_to_know");
             app.tell('You said ' + number);
         });
         app.handleRequest(actionMap);
