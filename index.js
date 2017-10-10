@@ -26,6 +26,5 @@ setInterval(() => {
         .then(({temperature,humidity}) =>{
             io.of('/').emit('temperature', temperature);
             io.of('/').emit('humidity', humidity);
-            io.sockets.emit('temperature',)
         })
 },1000)
