@@ -18,6 +18,9 @@ app.use(express.static('public'));
 app.get("/", function (request, response) {
     response.sendFile(__dirname + '/index.html');
 });
+app.get("/chatbot", function (request, response) {
+    response.sendFile(__dirname + '/chatbot.html');
+});
 
 // Handle webhook requests
 app.post('/', function (req, res, next) {
