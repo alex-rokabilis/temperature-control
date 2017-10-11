@@ -10,22 +10,53 @@
     body {
         background: steelblue;
     }
-    a:hover{
+
+    a:hover {
         color: orange;
     }
+
     a {
         color: white;
         text-decoration: none;
     }
+
+    @keyframes rot {
+        from {
+            transform: rotate(-5deg)
+        }
+        to {
+            transform: rotate(5deg)
+        }
+    }
+
+    #say_hello {
+        animation-name: rot;
+        animation-iteration-count: 20;
+        animation-duration: .3s;
+        animation-direction: alternate-reverse;
+        background: white;
+        border: 1px wheat;
+        border-radius: 10px;
+        width: 160px;
+        margin: 0 auto;
+        height: fit-content;
+        font-size: 18px;
+        padding: 13px;
+    }
 </style>
 
 <body>
+
     <iframe width="350" height="600" src="https://console.dialogflow.com/api-client/demo/embedded/2b2b1f23-9f86-4f61-87e9-4f1f3cd6cd9a">
     </iframe>
+    <br>
+    <div id="say_hello">
+        <p style="text-align: center; margin: 0; ">Try to say hello!</p>
+    </div>
     <h2 style="text-align:center;">
         <a href="/">Check the web gui!</a>
     </h2>
-    
+
 </body>
 
 </html>
