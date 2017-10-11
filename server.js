@@ -37,11 +37,13 @@ app.post('/', function (req, res, next) {
         let feelling = assistant.getArgument(FEELING_PARAMETER);
 
         if (needToKnow == 'temperature') {
+            let speech = ''
             if (feels) {
-                if (feelling == 'hot') assistant.tell('Yeah i feel hot too!');
-                else if (feelling == 'cold') assistant.tell('Brrr. There is chill in here!');
+                if (feelling == 'hot') speech += 'Yeah i feel hot too!';
+                else if (feelling == 'cold') speech += 'Brrr. There is chill in here!';
             }
-            assistant.tell('Temperature is 33 degrees celcius');
+            speech += 'Temperature is 33 degrees celcius'
+            assistant.tell(speech);
         } else if (needToKnow == 'humidity') {
             assistant.tell('Humidity is 33%');
         } else {
