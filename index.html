@@ -2,25 +2,119 @@
 
 <head>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="weather-icons.min.css">
 </head>
+<style>
+    body{
+        background: darkslategray;
+    }
+    p {
+        font-family: Liberation Sans;
+    }
+
+    .container {
+        width: 50%;
+        margin: 0 auto;
+    }
+
+    .left {
+        text-align: start;
+    }
+
+    .right {
+        text-align: end;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .header {
+        display: flex;
+        background: #005662;
+        color: #ffffff;
+        padding: 1em 2em;
+    }
+
+    .bold {
+        font-weight: bold;
+    }
+
+    .header p {
+        display: inline-block;
+        width: 50%;
+    }
+
+    .content {
+        background: #00838f;
+        padding: 3em 0;
+    }
+
+    .content .center {
+        color: white;
+        font-size: 7em;
+    }
+    .hidden{
+        display: none;
+    }
+    .wi-humidity{
+        -webkit-text-stroke: deepskyblue 2px;
+    }
+    .wi-thermometer{
+        -webkit-text-stroke: indianred 2px;
+    }
+    #currentTemperature{
+        -webkit-text-stroke: firebrick 1px;
+    }
+    #currentHumidity{
+        -webkit-text-stroke: lavender 1px;
+    }
+</style>
 
 <body>
-    <p>
-        <span>Temperature:</span>
-        <span id="currentTemperature"></span>
-    </p>
-    <p>
-        <span>Humidity:</span>
-        <span id="currentHumidity"></span>
-    </p>
+    <div class="container">
+        <div class="header">
+            <p class="left">
+                <span class="bold">Updated:</span>
+                <span id="updateTime"></span>
+                
+            </p>
+            <p class="right">
+                <span class="bold">Location:</span>
+                <span>Room</span>
+            </p>
+        </div>
+        <div class="content">
+            <p class="center">
+                <span class="bold">
+                    <i class="wi wi-thermometer"></i>
+                </span>
+                <span id="currentTemperature">
+                    <i class="wi wi-na"></i>
+                </span>
+                <i class="wi wi-celsius"></i>
+            </p>
+            <p class="center">
+                <span class="bold">
+                    <i class="wi wi-humidity"></i>
+                </span>
+                <span id='currentHumidity'>
+                    <i class="wi wi-na"></i>
+                </span>
+                <sup style="font-size:55px">%</sup>
+                
+            </p>
+        </div>
+    </div>
 
-   
+
     <script>
         var socket = io();
-        
+
         socket.on('temperature', function (data) {
             document.getElementById('currentTemperature').textContent = data
+            document.getElementById('updateTime').textContent = new Date().toLocaleTimeString('es')            
         });
         socket.on('humidity', function (data) {
             document.getElementById('currentHumidity').textContent = data
