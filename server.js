@@ -2,6 +2,7 @@ const express = require('express');
 const ApiAiAssistant = require('actions-on-google').ApiAiAssistant;
 const bodyParser = require('body-parser');
 const app = express();
+const sensor = require('./sensor')
 
 
 app.use(bodyParser.json({
@@ -39,13 +40,27 @@ app.post('/', function (req, res, next) {
         if (needToKnow == 'temperature') {
             let speech = ''
             if (feels) {
-                if (feelling == 'hot') speech += 'Yeah i feel hot too!';
-                else if (feelling == 'cold') speech += 'Brrr. There is chill in here!';
+                if (feelling == 'hot') speech += 'Yeah i feel hot too! Actually the ';
+                else if (feelling == 'cold') speech += 'Brrr. There is chill in here! Actually the ';
             }
-            speech += 'Temperature is 33 degrees celcius'
-            assistant.tell(speech);
+            sensor.read()
+                .then(({
+                    temperature,
+                    humidity
+                }) => {
+                    speech += 'Temperature is ' + temperature + ' degrees celcius';
+                    assistant.tell(speech);
+                })
+
+
         } else if (needToKnow == 'humidity') {
-            assistant.tell('Humidity is 33%');
+            sensor.read()
+            .then(({
+                temperature,
+                humidity
+            }) => {
+                assistant.tell('Humidity is ' + humidity + '%');
+            })
         } else {
             assistant.tell('I am not sure what you want me to do!');
         }
