@@ -52,13 +52,3 @@ function handler(req, res) {
 }
 
 
-setInterval(() => {
-    sensor.read()
-        .then(({
-            temperature,
-            humidity
-        }) => {
-            io.of('/').emit('temperature', temperature);
-            io.of('/').emit('humidity', humidity);
-        })
-}, 1000)

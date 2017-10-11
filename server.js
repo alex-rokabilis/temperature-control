@@ -2,7 +2,11 @@ const express = require('express');
 const ApiAiAssistant = require('actions-on-google').ApiAiAssistant;
 const bodyParser = require('body-parser');
 const app = express();
-const sensor = require('./sensor')
+const sensor = require('./sensor');
+const server = app.listen(3001, function () {
+    console.log('Your app is listening on port ' + server.address().port);
+});
+const io = require('socket.io')(server);
 
 
 app.use(bodyParser.json({
@@ -40,8 +44,8 @@ app.post('/', function (req, res, next) {
         if (needToKnow == 'temperature') {
             let speech = ''
             if (feels) {
-                if (feelling == 'hot') speech += 'Yeah i feel hot too! Actually the ';
-                else if (feelling == 'cold') speech += 'Brrr. There is chill in here! Actually the ';
+                if (feelling == 'hot') speech += 'Yeah my circuits are on fire! Actually the ';
+                else if (feelling == 'cold') speech += 'Brrrrrr, there is chill in here! Actually the ';
             }
             sensor.read()
                 .then(({
@@ -79,7 +83,16 @@ app.use(function (err, req, res, next) {
     res.status(500).send('Something broke!')
 })
 
-// Listen for requests.
-let server = app.listen(3001, function () {
-    console.log('Your app is listening on port ' + server.address().port);
-});
+
+//socket io
+
+setInterval(() => {
+    sensor.read()
+        .then(({
+            temperature,
+            humidity
+        }) => {
+            io.of('/').emit('temperature', temperature);
+            io.of('/').emit('humidity', humidity);
+        })
+}, 1000)
