@@ -51,8 +51,8 @@ app.post('/', function (req, res, next) {
                     humidity
                 }) => {
                     if (feels) {
-                        if (feelling == 'hot') speech += 'Yeah my circuits are on fire! Actually the temperature is ' + temperature + ' degrees celcius';
-                        else if (feelling == 'cold') speech += 'Brrrrrr, there is chill in here! Actually the temperature is ' + temperature + ' degrees celcius';
+                        if (feelling == 'hot') assistant.tell('Yeah my circuits are on fire! Actually the temperature is ' + temperature + ' degrees celcius');
+                        else if (feelling == 'cold') assistant.tell('Brrrrrr, there is chill in here! Actually the temperature is ' + temperature + ' degrees celcius');
                     } else {
                         assistant.tell('Temperature is ' + temperature + ' degrees celcius.');
                     }
